@@ -33,6 +33,11 @@ export async function generateProposalDocx(
     content,
   } = options;
 
+  // Filter function to exclude deleted resources
+  const filterApprovedResources = (resources: any[]) => {
+    return resources.filter((resource) => resource.status !== 'deleted');
+  };
+
   // Load logo image
   const logoPath = path.join(process.cwd(), 'public', 'logo-sddc.jpg');
   let logoImage: Buffer | undefined;
@@ -177,47 +182,58 @@ export async function generateProposalDocx(
           }),
 
           // Governmental Resources
-          new Paragraph({
-            text: 'Governmental Resources',
-            heading: HeadingLevel.HEADING_1,
-            spacing: { before: 400, after: 200 },
-          }),
-
-          ...generateResourceParagraphs(content.governmental_resources),
+          ...(filterApprovedResources(content.governmental_resources).length > 0
+            ? [
+                new Paragraph({
+                  text: 'Governmental Resources',
+                  heading: HeadingLevel.HEADING_1,
+                  spacing: { before: 400, after: 200 },
+                }),
+                ...generateResourceParagraphs(
+                  filterApprovedResources(content.governmental_resources)
+                ),
+              ]
+            : []),
 
           // Academic Resources
-          ...(content.academic_resources.length > 0
+          ...(filterApprovedResources(content.academic_resources).length > 0
             ? [
                 new Paragraph({
                   text: 'Academic Resources',
                   heading: HeadingLevel.HEADING_1,
                   spacing: { before: 400, after: 200 },
                 }),
-                ...generateResourceParagraphs(content.academic_resources),
+                ...generateResourceParagraphs(
+                  filterApprovedResources(content.academic_resources)
+                ),
               ]
             : []),
 
           // Nonprofit Resources
-          ...(content.nonprofit_resources.length > 0
+          ...(filterApprovedResources(content.nonprofit_resources).length > 0
             ? [
                 new Paragraph({
                   text: 'Nonprofit Resources',
                   heading: HeadingLevel.HEADING_1,
                   spacing: { before: 400, after: 200 },
                 }),
-                ...generateResourceParagraphs(content.nonprofit_resources),
+                ...generateResourceParagraphs(
+                  filterApprovedResources(content.nonprofit_resources)
+                ),
               ]
             : []),
 
           // Cultural Activities
-          ...(content.cultural_activities.length > 0
+          ...(filterApprovedResources(content.cultural_activities).length > 0
             ? [
                 new Paragraph({
                   text: 'Cultural Activities',
                   heading: HeadingLevel.HEADING_1,
                   spacing: { before: 400, after: 200 },
                 }),
-                ...generateCulturalParagraphs(content.cultural_activities),
+                ...generateCulturalParagraphs(
+                  filterApprovedResources(content.cultural_activities)
+                ),
               ]
             : []),
         ],

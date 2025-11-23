@@ -220,11 +220,29 @@ export async function generateProposalPDFAsync(
     });
   };
 
-  // Add all resource sections
-  addResourceSection('Governmental Resources', proposalContent.governmental_resources);
-  addResourceSection('Academic Resources', proposalContent.academic_resources);
-  addResourceSection('Nonprofit Resources', proposalContent.nonprofit_resources);
-  addResourceSection('Cultural Activities', proposalContent.cultural_activities, false);
+  // Filter function to exclude deleted resources
+  const filterApprovedResources = (resources: any[]) => {
+    return resources.filter((resource) => resource.status !== 'deleted');
+  };
+
+  // Add all resource sections (filtered to exclude deleted resources)
+  addResourceSection(
+    'Governmental Resources',
+    filterApprovedResources(proposalContent.governmental_resources)
+  );
+  addResourceSection(
+    'Academic Resources',
+    filterApprovedResources(proposalContent.academic_resources)
+  );
+  addResourceSection(
+    'Nonprofit Resources',
+    filterApprovedResources(proposalContent.nonprofit_resources)
+  );
+  addResourceSection(
+    'Cultural Activities',
+    filterApprovedResources(proposalContent.cultural_activities),
+    false
+  );
 
   // Footer on all pages
   const pageCount = doc.getNumberOfPages();
