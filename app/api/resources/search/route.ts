@@ -6,7 +6,7 @@ import path from 'path';
 let resourcesData: any[] = [];
 
 try {
-  const filePath = path.join(process.cwd(), '..', 'database_resources.json');
+  const filePath = path.join(process.cwd(), 'database_resources.json');
   const fileContent = fs.readFileSync(filePath, 'utf-8');
   resourcesData = JSON.parse(fileContent);
 } catch (error) {
