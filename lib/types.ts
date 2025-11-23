@@ -262,10 +262,10 @@ export interface PaginatedResponse<T> {
 // =============================================
 
 export interface ProjectContext {
-  project: Project;
-  documents: Document[];
-  proposal?: Proposal;
-  resources: Resource[];
+  project: Project | any;
+  documents: Document[] | any[];
+  proposal?: Proposal | any;
+  resources?: Resource[];
 }
 
 export interface ClaudeMessage {
