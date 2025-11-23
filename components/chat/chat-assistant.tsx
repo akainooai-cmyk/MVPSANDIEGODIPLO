@@ -1,10 +1,9 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { MessageSquare, Send, Loader2 } from 'lucide-react';
+import { Send, Loader2 } from 'lucide-react';
 import type { Message } from '@/lib/types';
 
 interface ChatAssistantProps {
@@ -122,15 +121,8 @@ export function ChatAssistant({ projectId, initialContext }: ChatAssistantProps)
   };
 
   return (
-    <Card className="flex flex-col h-[500px] sm:h-[600px] lg:h-[700px]">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <MessageSquare className="h-5 w-5" />
-          AI Assistant
-        </CardTitle>
-      </CardHeader>
-
-      <CardContent className="flex-1 flex flex-col gap-4 overflow-hidden">
+    <div className="flex flex-col h-full bg-white">
+      <div className="flex-1 flex flex-col gap-4 overflow-hidden p-4">
         {/* Messages Area */}
         <div className="flex-1 overflow-y-auto space-y-4 pr-2">
           {messages.length === 0 ? (
@@ -217,7 +209,7 @@ export function ChatAssistant({ projectId, initialContext }: ChatAssistantProps)
         <p className="text-xs text-gray-500 text-center">
           The assistant has access to your project data, uploaded documents, and all San Diego resources.
         </p>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

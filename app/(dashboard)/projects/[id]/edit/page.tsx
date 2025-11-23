@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Save, Download, FileText, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Save, Download, FileText, MessageCircle, X } from 'lucide-react';
 import { ChatAssistant } from '@/components/chat/chat-assistant';
 import { downloadProposalPDF } from '@/lib/pdf/generator';
 import { ResourceSection } from '@/components/proposals/resource-section';
@@ -328,20 +328,24 @@ export default function ProposalEditPage({
 
       {/* AI Chat Assistant - Fixed bottom right */}
       {showChat && (
-        <div className="fixed bottom-6 right-6 w-96 h-[500px] shadow-2xl rounded-lg overflow-hidden z-50 bg-white">
-          <div className="relative h-full">
-            <Button
-              size="sm"
-              variant="ghost"
-              className="absolute top-2 right-2 z-10"
-              onClick={() => setShowChat(false)}
-            >
-              Close
-            </Button>
-            <ChatAssistant
-              projectId={resolvedParams.id}
-              initialContext={chatContext}
-            />
+        <div className="fixed bottom-6 right-6 w-96 h-[600px] shadow-2xl rounded-lg overflow-hidden z-50 bg-white border border-gray-200">
+          <div className="flex flex-col h-full">
+            <div className="flex items-center justify-between p-3 border-b bg-gray-50">
+              <h3 className="font-semibold text-sm">AI Assistant</h3>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setShowChat(false)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <ChatAssistant
+                projectId={resolvedParams.id}
+                initialContext={chatContext}
+              />
+            </div>
           </div>
         </div>
       )}
