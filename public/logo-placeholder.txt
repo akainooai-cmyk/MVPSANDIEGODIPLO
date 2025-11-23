@@ -1,0 +1,8 @@
+Place the SDDC logo file here as "logo-sddc.jpg"
+
+The logo should be in JPG format and will be used:
+- In the header of the application
+- In the PDF exports of proposals
+- As the favicon
+
+Recommended dimensions: 400x120 pixels
