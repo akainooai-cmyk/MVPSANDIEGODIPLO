@@ -66,6 +66,7 @@ export async function generateProposalDocx(
                   children: [
                     new ImageRun({
                       data: logoImage,
+                      type: 'jpg',
                       transformation: {
                         width: 200,
                         height: 80,
