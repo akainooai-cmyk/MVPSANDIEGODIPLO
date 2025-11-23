@@ -3,6 +3,7 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
+  "rootDirectory": "sddc-proposal-manager",
   "functions": {
     "app/api/proposals/generate/route.ts": {
       "maxDuration": 60
