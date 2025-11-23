@@ -15,7 +15,9 @@ interface ResourceCardProps {
     name: string;
     url: string;
     description: string;
-    meeting_focus: string;
+    meeting_focus?: string;  // Optional for cultural activities
+    price?: string;  // For cultural activities
+    accessibility?: string;  // For cultural activities
   };
   category: 'governmental' | 'academic' | 'nonprofit' | 'cultural';
   status?: ResourceStatus;
@@ -66,7 +68,7 @@ export function ResourceCard({
   }
 
   return (
-    <Card className={`border-l-4 ${categoryColors[category]} ${status === 'deleted' ? 'opacity-50' : ''}`}>
+    <Card className={`border-l-4 ${categoryColors[category]}`}>
       <CardContent className="p-4">
         <div className="space-y-3">
           {/* Header with status and actions */}
@@ -124,25 +126,64 @@ export function ResourceCard({
             <p className="text-gray-700 text-sm">{resource.description}</p>
           )}
 
-          {/* Meeting Focus */}
-          <div className="bg-gray-50 p-3 rounded-md">
-            <p className="text-xs font-semibold text-gray-600 mb-1">Meeting Focus:</p>
-            {isEditing ? (
-              <Textarea
-                value={editedResource.meeting_focus}
-                onChange={(e) =>
-                  setEditedResource({
-                    ...editedResource,
-                    meeting_focus: e.target.value,
-                  })
-                }
-                rows={2}
-                className="text-sm"
-              />
-            ) : (
-              <p className="text-sm italic text-gray-700">{resource.meeting_focus}</p>
-            )}
-          </div>
+          {/* Meeting Focus (for non-cultural) or Price/Accessibility (for cultural) */}
+          {category === 'cultural' ? (
+            <div className="bg-gray-50 p-3 rounded-md space-y-2">
+              <div>
+                <p className="text-xs font-semibold text-gray-600 mb-1">Price:</p>
+                {isEditing ? (
+                  <Input
+                    value={editedResource.price || ''}
+                    onChange={(e) =>
+                      setEditedResource({ ...editedResource, price: e.target.value })
+                    }
+                    className="text-sm"
+                  />
+                ) : (
+                  <p className="text-sm text-gray-700">{resource.price || 'N/A'}</p>
+                )}
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-gray-600 mb-1">Accessibility:</p>
+                {isEditing ? (
+                  <Textarea
+                    value={editedResource.accessibility || ''}
+                    onChange={(e) =>
+                      setEditedResource({
+                        ...editedResource,
+                        accessibility: e.target.value,
+                      })
+                    }
+                    rows={2}
+                    className="text-sm"
+                  />
+                ) : (
+                  <p className="text-sm text-gray-700">{resource.accessibility || 'N/A'}</p>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className="bg-gray-50 p-3 rounded-md">
+              <p className="text-xs font-semibold text-gray-600 mb-1">Meeting Focus:</p>
+              {isEditing ? (
+                <Textarea
+                  value={editedResource.meeting_focus || ''}
+                  onChange={(e) =>
+                    setEditedResource({
+                      ...editedResource,
+                      meeting_focus: e.target.value,
+                    })
+                  }
+                  rows={2}
+                  className="text-sm"
+                />
+              ) : (
+                <p className="text-sm italic text-gray-700">
+                  {resource.meeting_focus || 'To be determined'}
+                </p>
+              )}
+            </div>
+          )}
 
           {/* Actions */}
           <div className="flex flex-wrap gap-2 pt-2 border-t">

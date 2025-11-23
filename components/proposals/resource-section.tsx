@@ -12,7 +12,9 @@ interface ResourceWithStatus {
   name: string;
   url: string;
   description: string;
-  meeting_focus: string;
+  meeting_focus?: string;  // Optional for cultural activities
+  price?: string;  // For cultural activities
+  accessibility?: string;  // For cultural activities
   status?: ResourceStatus;
   id?: string;
 }

@@ -236,9 +236,9 @@ export default function ProposalEditPage({
       <ResourceSection
         title="Governmental Resources"
         category="governmental"
-        resources={content.governmental_resources}
+        resources={content.governmental_resources as any}
         onResourcesChange={(updated) =>
-          setContent({ ...content, governmental_resources: updated })
+          setContent({ ...content, governmental_resources: updated as any })
         }
         onAddResource={() => handleAddResource('governmental_resources')}
         onDiscussResource={handleDiscussResource}
@@ -248,9 +248,9 @@ export default function ProposalEditPage({
       <ResourceSection
         title="Academic Resources"
         category="academic"
-        resources={content.academic_resources}
+        resources={content.academic_resources as any}
         onResourcesChange={(updated) =>
-          setContent({ ...content, academic_resources: updated })
+          setContent({ ...content, academic_resources: updated as any })
         }
         onAddResource={() => handleAddResource('academic_resources')}
         onDiscussResource={handleDiscussResource}
@@ -260,9 +260,9 @@ export default function ProposalEditPage({
       <ResourceSection
         title="Nonprofit Resources"
         category="nonprofit"
-        resources={content.nonprofit_resources}
+        resources={content.nonprofit_resources as any}
         onResourcesChange={(updated) =>
-          setContent({ ...content, nonprofit_resources: updated })
+          setContent({ ...content, nonprofit_resources: updated as any })
         }
         onAddResource={() => handleAddResource('nonprofit_resources')}
         onDiscussResource={handleDiscussResource}
@@ -272,9 +272,9 @@ export default function ProposalEditPage({
       <ResourceSection
         title="Cultural Activities"
         category="cultural"
-        resources={content.cultural_activities}
+        resources={content.cultural_activities as any}
         onResourcesChange={(updated) =>
-          setContent({ ...content, cultural_activities: updated })
+          setContent({ ...content, cultural_activities: updated as any })
         }
         onAddResource={() => handleAddResource('cultural_activities')}
         onDiscussResource={handleDiscussResource}
