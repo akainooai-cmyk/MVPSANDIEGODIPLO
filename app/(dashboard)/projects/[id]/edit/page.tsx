@@ -7,9 +7,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Save, Download, FileText } from 'lucide-react';
+import { ArrowLeft, Save, Download, FileText, MessageCircle } from 'lucide-react';
 import { ChatAssistant } from '@/components/chat/chat-assistant';
 import { downloadProposalPDF } from '@/lib/pdf/generator';
+import { ResourceSection } from '@/components/proposals/resource-section';
 import type { ProposalContent } from '@/lib/types';
 
 export default function ProposalEditPage({
@@ -25,6 +26,8 @@ export default function ProposalEditPage({
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [showChat, setShowChat] = useState(false);
+  const [chatContext, setChatContext] = useState<any>(null);
 
   useEffect(() => {
     fetchProposal();
@@ -91,6 +94,17 @@ export default function ProposalEditPage({
     } finally {
       setSaving(false);
     }
+  };
+
+  const handleAddResource = (category: keyof ProposalContent) => {
+    // TODO: Open modal to add resource
+    alert(`Add resource to ${category} - Feature coming in next phase!`);
+  };
+
+  const handleDiscussResource = (resource: any) => {
+    // Open chat with context about this resource
+    setShowChat(true);
+    // TODO: Auto-populate chat with context in Phase 3
   };
 
   const handleExport = async (format: 'docx' | 'pdf') => {
@@ -219,120 +233,79 @@ export default function ProposalEditPage({
       </Card>
 
       {/* Governmental Resources */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Governmental Resources</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {content.governmental_resources.map((resource, index) => (
-            <div key={index} className="border-l-4 border-blue-500 pl-4">
-              <h4 className="font-semibold">{resource.name}</h4>
-              <a
-                href={resource.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-blue-600 hover:underline"
-              >
-                {resource.url}
-              </a>
-              <p className="text-gray-700 mt-2">{resource.description}</p>
-              <p className="text-sm italic text-gray-600 mt-2">
-                <strong>Meeting Focus:</strong> {resource.meeting_focus}
-              </p>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
+      <ResourceSection
+        title="Governmental Resources"
+        category="governmental"
+        resources={content.governmental_resources}
+        onResourcesChange={(updated) =>
+          setContent({ ...content, governmental_resources: updated })
+        }
+        onAddResource={() => handleAddResource('governmental_resources')}
+        onDiscussResource={handleDiscussResource}
+      />
 
       {/* Academic Resources */}
-      {content.academic_resources.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Academic Resources</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {content.academic_resources.map((resource, index) => (
-              <div key={index} className="border-l-4 border-green-500 pl-4">
-                <h4 className="font-semibold">{resource.name}</h4>
-                <a
-                  href={resource.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-blue-600 hover:underline"
-                >
-                  {resource.url}
-                </a>
-                <p className="text-gray-700 mt-2">{resource.description}</p>
-                <p className="text-sm italic text-gray-600 mt-2">
-                  <strong>Meeting Focus:</strong> {resource.meeting_focus}
-                </p>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      )}
+      <ResourceSection
+        title="Academic Resources"
+        category="academic"
+        resources={content.academic_resources}
+        onResourcesChange={(updated) =>
+          setContent({ ...content, academic_resources: updated })
+        }
+        onAddResource={() => handleAddResource('academic_resources')}
+        onDiscussResource={handleDiscussResource}
+      />
 
       {/* Nonprofit Resources */}
-      {content.nonprofit_resources.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Nonprofit Resources</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {content.nonprofit_resources.map((resource, index) => (
-              <div key={index} className="border-l-4 border-purple-500 pl-4">
-                <h4 className="font-semibold">{resource.name}</h4>
-                <a
-                  href={resource.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-blue-600 hover:underline"
-                >
-                  {resource.url}
-                </a>
-                <p className="text-gray-700 mt-2">{resource.description}</p>
-                <p className="text-sm italic text-gray-600 mt-2">
-                  <strong>Meeting Focus:</strong> {resource.meeting_focus}
-                </p>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      )}
+      <ResourceSection
+        title="Nonprofit Resources"
+        category="nonprofit"
+        resources={content.nonprofit_resources}
+        onResourcesChange={(updated) =>
+          setContent({ ...content, nonprofit_resources: updated })
+        }
+        onAddResource={() => handleAddResource('nonprofit_resources')}
+        onDiscussResource={handleDiscussResource}
+      />
 
       {/* Cultural Activities */}
-      {content.cultural_activities.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Cultural Activities</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {content.cultural_activities.map((activity, index) => (
-              <div key={index} className="border-l-4 border-orange-500 pl-4">
-                <h4 className="font-semibold">{activity.name}</h4>
-                <a
-                  href={activity.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-blue-600 hover:underline"
-                >
-                  {activity.url}
-                </a>
-                <p className="text-sm text-gray-600 mt-1">
-                  <strong>Price:</strong> {activity.price}
-                </p>
-                <p className="text-gray-700 mt-2">{activity.description}</p>
-                <p className="text-sm text-gray-600 mt-2">
-                  <strong>Accessibility:</strong> {activity.accessibility}
-                </p>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+      <ResourceSection
+        title="Cultural Activities"
+        category="cultural"
+        resources={content.cultural_activities}
+        onResourcesChange={(updated) =>
+          setContent({ ...content, cultural_activities: updated })
+        }
+        onAddResource={() => handleAddResource('cultural_activities')}
+        onDiscussResource={handleDiscussResource}
+      />
+
+      {/* AI Chat Assistant - Fixed bottom right */}
+      {showChat && (
+        <div className="fixed bottom-6 right-6 w-96 h-[500px] shadow-2xl rounded-lg overflow-hidden z-50 bg-white">
+          <div className="relative h-full">
+            <Button
+              size="sm"
+              variant="ghost"
+              className="absolute top-2 right-2 z-10"
+              onClick={() => setShowChat(false)}
+            >
+              Close
+            </Button>
+            <ChatAssistant projectId={resolvedParams.id} />
+          </div>
+        </div>
       )}
 
-      {/* AI Chat Assistant */}
-      <ChatAssistant projectId={resolvedParams.id} />
+      {/* Chat Toggle Button */}
+      {!showChat && (
+        <Button
+          className="fixed bottom-6 right-6 rounded-full h-14 w-14 shadow-lg"
+          onClick={() => setShowChat(true)}
+        >
+          <MessageCircle className="h-6 w-6" />
+        </Button>
+      )}
     </div>
   );
 }
