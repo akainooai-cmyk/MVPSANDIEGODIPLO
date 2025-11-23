@@ -6,6 +6,7 @@ import {
   HeadingLevel,
   AlignmentType,
   BorderStyle,
+  ImageRun,
 } from 'docx';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -32,6 +33,18 @@ export async function generateProposalDocx(
     content,
   } = options;
 
+  // Load logo image
+  const logoPath = path.join(process.cwd(), 'public', 'logo-sddc.jpg');
+  let logoImage: Buffer | undefined;
+
+  try {
+    if (fs.existsSync(logoPath)) {
+      logoImage = fs.readFileSync(logoPath);
+    }
+  } catch (error) {
+    console.warn('Could not load logo for DOCX export:', error);
+  }
+
   const doc = new Document({
     sections: [
       {
@@ -46,6 +59,25 @@ export async function generateProposalDocx(
           },
         },
         children: [
+          // Logo
+          ...(logoImage
+            ? [
+                new Paragraph({
+                  children: [
+                    new ImageRun({
+                      data: logoImage,
+                      transformation: {
+                        width: 200,
+                        height: 80,
+                      },
+                    }),
+                  ],
+                  alignment: AlignmentType.CENTER,
+                  spacing: { after: 400 },
+                }),
+              ]
+            : []),
+
           // Header Information
           new Paragraph({
             children: [
