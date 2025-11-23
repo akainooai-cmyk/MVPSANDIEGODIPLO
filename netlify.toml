@@ -1,17 +1,13 @@
-[build]
-  command = "npm run build"
-  publish = ".next"
+# Configuration Netlify - DEPRECATED
+# This project is now configured for Vercel deployment
+# See vercel.json for the new configuration
 
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+# [build]
+#   command = "npm run build"
+#   publish = ".next"
 
-[build.environment]
-  NODE_VERSION = "20"
+# [[plugins]]
+#   package = "@netlify/plugin-nextjs"
 
-[functions]
-  # Increase timeout for serverless functions (max 26s on Netlify)
-  node_bundler = "esbuild"
-
-[[edge_functions]]
-  # Use edge functions for faster response times
-  path = "/api/proposals/generate"
+# [build.environment]
+#   NODE_VERSION = "20"
