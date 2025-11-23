@@ -22,7 +22,7 @@ export async function generateProposal(
 
   const response = await anthropic.messages.create({
     model: 'claude-sonnet-4-20250514',
-    max_tokens: 8192,
+    max_tokens: 6000,
     system: PROPOSAL_GENERATION_PROMPT,
     messages: [{ role: 'user', content: userPrompt }],
   });

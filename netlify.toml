@@ -7,3 +7,11 @@
 
 [build.environment]
   NODE_VERSION = "20"
+
+[functions]
+  # Increase timeout for serverless functions (max 26s on Netlify)
+  node_bundler = "esbuild"
+
+[[edge_functions]]
+  # Use edge functions for faster response times
+  path = "/api/proposals/generate"

@@ -133,11 +133,12 @@ ${JSON.stringify(biosObjectives, null, 2)}` : ''}
 
 ### Ressources Existantes dans la Base de Données (OPTIONNEL - pour référence)
 ${resources.length > 0 ? `
-Tu peux t'inspirer de ces ressources existantes, mais tu n'es PAS limité à elles.
+Tu peux t'inspirer de ces ${resources.length} ressources existantes, mais tu n'es PAS limité à elles.
 Tu peux proposer d'AUTRES ressources pertinentes basées sur tes connaissances.
 
-${JSON.stringify(resources.slice(0, 10), null, 2)}
-... (et ${resources.length - 10} autres ressources disponibles)
+Exemples de ressources disponibles:
+${resources.slice(0, 5).map(r => `- ${r.name} (${r.category})`).join('\n')}
+... (et ${resources.length - 5} autres)
 ` : 'Aucune ressource dans la base. Propose des ressources basées sur tes connaissances de San Diego.'}
 
 ---
