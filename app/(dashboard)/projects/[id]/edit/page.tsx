@@ -11,6 +11,8 @@ import { ArrowLeft, Save, Download, FileText, MessageCircle } from 'lucide-react
 import { ChatAssistant } from '@/components/chat/chat-assistant';
 import { downloadProposalPDF } from '@/lib/pdf/generator';
 import { ResourceSection } from '@/components/proposals/resource-section';
+import { AddResourceModal } from '@/components/proposals/add-resource-modal';
+import { SuggestionsPanel } from '@/components/proposals/suggestions-panel';
 import type { ProposalContent } from '@/lib/types';
 
 export default function ProposalEditPage({
@@ -28,6 +30,11 @@ export default function ProposalEditPage({
   const [error, setError] = useState('');
   const [showChat, setShowChat] = useState(false);
   const [chatContext, setChatContext] = useState<any>(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [addModalCategory, setAddModalCategory] = useState<
+    'governmental' | 'academic' | 'nonprofit' | 'cultural'
+  >('governmental');
+  const [showSuggestions, setShowSuggestions] = useState(true);
 
   useEffect(() => {
     fetchProposal();
@@ -97,14 +104,45 @@ export default function ProposalEditPage({
   };
 
   const handleAddResource = (category: keyof ProposalContent) => {
-    // TODO: Open modal to add resource
-    alert(`Add resource to ${category} - Feature coming in next phase!`);
+    // Map ProposalContent keys to modal categories
+    const categoryMap: { [key: string]: 'governmental' | 'academic' | 'nonprofit' | 'cultural' } = {
+      governmental_resources: 'governmental',
+      academic_resources: 'academic',
+      nonprofit_resources: 'nonprofit',
+      cultural_activities: 'cultural',
+    };
+
+    setAddModalCategory(categoryMap[category] || 'governmental');
+    setShowAddModal(true);
+  };
+
+  const handleAddNewResource = (resource: any) => {
+    if (!content) return;
+
+    // Map category to content key
+    const categoryMap: { [key: string]: keyof ProposalContent } = {
+      governmental: 'governmental_resources',
+      academic: 'academic_resources',
+      nonprofit: 'nonprofit_resources',
+      cultural: 'cultural_activities',
+    };
+
+    const contentKey = categoryMap[addModalCategory];
+    const currentResources = content[contentKey] as any[];
+
+    setContent({
+      ...content,
+      [contentKey]: [...currentResources, { ...resource, status: 'pending' }],
+    });
   };
 
   const handleDiscussResource = (resource: any) => {
-    // Open chat with context about this resource
+    setChatContext({
+      type: 'resource',
+      resource: resource,
+      message: `I need help with this resource: "${resource.name}". Can you suggest improvements to the description or meeting focus, or recommend alternative resources?`,
+    });
     setShowChat(true);
-    // TODO: Auto-populate chat with context in Phase 3
   };
 
   const handleExport = async (format: 'docx' | 'pdf') => {
@@ -215,6 +253,14 @@ export default function ProposalEditPage({
         </div>
       )}
 
+      {/* AI Suggestions */}
+      {showSuggestions && (
+        <SuggestionsPanel
+          proposalId={proposal.id}
+          onDismiss={() => setShowSuggestions(false)}
+        />
+      )}
+
       {/* Why San Diego */}
       <Card>
         <CardHeader>
@@ -292,7 +338,10 @@ export default function ProposalEditPage({
             >
               Close
             </Button>
-            <ChatAssistant projectId={resolvedParams.id} />
+            <ChatAssistant
+              projectId={resolvedParams.id}
+              initialContext={chatContext}
+            />
           </div>
         </div>
       )}
@@ -306,6 +355,14 @@ export default function ProposalEditPage({
           <MessageCircle className="h-6 w-6" />
         </Button>
       )}
+
+      {/* Add Resource Modal */}
+      <AddResourceModal
+        open={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onAdd={handleAddNewResource}
+        category={addModalCategory}
+      />
     </div>
   );
 }

@@ -1,19 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx create-next-app:*)",
       "Bash(npm install:*)",
-      "Bash(npx tailwindcss:*)",
       "Bash(npm run build:*)",
-      "Bash(npm uninstall:*)",
-      "Bash(npm run dev)",
-      "Bash(taskkill:*)",
-      "Bash(nul)",
-      "Bash(if exist .nextdevlock del .nextdevlock)",
-      "Bash(git init:*)",
-      "Bash(if exist nul del nul)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nInitial commit: IVLP Proposal Manager with full mobile responsive design\n\nImplements a complete proposal management system for San Diego Diplomacy Council with mobile-first responsive design to ensure accessibility across all devices. Features include AI-powered proposal generation, document management, resource database, and real-time chat assistant.\n\nKey mobile optimizations:\n- Responsive sidebar with hamburger menu for mobile navigation\n- Adaptive layouts with mobile-first breakpoints (sm/md/lg)\n- Touch-friendly buttons and form controls\n- Optimized spacing and typography for small screens\n- Responsive chat assistant with adaptive heights\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git rm:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git remote add:*)",
+      "Bash(git pull:*)"
     ],
     "deny": [],
     "ask": []

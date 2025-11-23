@@ -9,13 +9,19 @@ import type { Message } from '@/lib/types';
 
 interface ChatAssistantProps {
   projectId: string;
+  initialContext?: {
+    type: 'resource' | 'general';
+    resource?: any;
+    message?: string;
+  };
 }
 
-export function ChatAssistant({ projectId }: ChatAssistantProps) {
+export function ChatAssistant({ projectId, initialContext }: ChatAssistantProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [contextProcessed, setContextProcessed] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when new messages arrive
@@ -31,6 +37,20 @@ export function ChatAssistant({ projectId }: ChatAssistantProps) {
     // Load conversation history
     loadConversation();
   }, [projectId]);
+
+  useEffect(() => {
+    // Process initial context if provided
+    if (initialContext && !contextProcessed && messages.length > 0) {
+      setContextProcessed(true);
+
+      if (initialContext.type === 'resource' && initialContext.resource) {
+        // Auto-send a message about the resource
+        const contextMessage = initialContext.message ||
+          `I'd like help with this resource: ${initialContext.resource.name}. Can you suggest improvements or alternatives?`;
+        setInput(contextMessage);
+      }
+    }
+  }, [initialContext, messages, contextProcessed]);
 
   const loadConversation = async () => {
     try {

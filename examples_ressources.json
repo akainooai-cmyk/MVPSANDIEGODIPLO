@@ -1,0 +1,279 @@
+{
+  "summary": {
+    "total_resources": 126,
+    "by_status": {
+      "archived": 75,
+      "current": 40,
+      "upcoming": 11
+    },
+    "by_fiscal_year": {
+      "FY2023": 38,
+      "FY2024": 37,
+      "FY2025": 40,
+      "FY2026": 11
+    },
+    "by_theme": {
+      "Climate": 82,
+      "Security": 59,
+      "Health": 98,
+      "Economy": 88,
+      "Education": 17,
+      "Human Rights": 27,
+      "Arts & Culture": 1,
+      "Democracy": 3,
+      "Technology": 1,
+      "Maritime": 1
+    },
+    "by_region": {
+      "Europe": 27,
+      "Americas": 93,
+      "Indo-Pacific": 44,
+      "Global": 17,
+      "Asia": 27,
+      "Africa": 26,
+      "Central Asia": 4,
+      "Middle East": 17
+    },
+    "active_count": 51,
+    "archived_count": 75
+  },
+  "examples_by_status": {
+    "upcoming_fy2026": [
+      {
+        "id": "IVLP-FY2026-116",
+        "title": "IVLP  Arts Ambassadors  30 Years of U.S. - Vietnam Cooperation in Creative Industries ",
+        "description": "Project Title/Subject:\tInnovative Solutions for a Resilient ‘Blue Economy’ Project Type: \t\tSub-Regional Project NPA:   \t\t\tAmerican Councils",
+        "type": "IVLP Proposal",
+        "fiscal_year": "FY2026",
+        "status": "upcoming",
+        "priority": 4,
+        "themes": [
+          "Economy",
+          "Education",
+          "Democracy"
+        ],
+        "regions": [
+          "Indo-Pacific",
+          "Asia"
+        ],
+        "file_path": "C:\\Users\\yoanb\\Desktop\\MVPSandiegodiplo\\Ressource\\Proposals Sent FY2026-20251122T232204Z-1-001\\Proposals Sent FY2026\\IVLP_ Arts Ambassadors_ 30 Years of U.S.-Vietnam Cooperation in Creative Industries_.docx",
+        "filename": "IVLP_ Arts Ambassadors_ 30 Years of U.S.-Vietnam Cooperation in Creative Industries_",
+        "created_date": "2025-11-23T12:37:03.176011",
+        "is_active": true,
+        "metadata": {
+          "years_mentioned": [
+            "2013",
+            "2025"
+          ],
+          "document_type": "docx"
+        }
+      },
+      {
+        "id": "IVLP-FY2026-117",
+        "title": "IVLP  Innovative Solutions for a Resilient  Blue Economy ",
+        "description": "Project Title/Subject:\tInnovative Solutions for a Resilient ‘Blue Economy’ Project Type: \t\tSub-Regional Project NPA:   \t\t\tAmerican Councils",
+        "type": "IVLP Proposal",
+        "fiscal_year": "FY2026",
+        "status": "upcoming",
+        "priority": 4,
+        "themes": [
+          "Climate",
+          "Security",
+          "Health"
+        ],
+        "regions": [
+          "Indo-Pacific",
+          "Americas"
+        ],
+        "file_path": "C:\\Users\\yoanb\\Desktop\\MVPSandiegodiplo\\Ressource\\Proposals Sent FY2026-20251122T232204Z-1-001\\Proposals Sent FY2026\\IVLP_ Innovative Solutions for a Resilient _Blue Economy_.docx",
+        "filename": "IVLP_ Innovative Solutions for a Resilient _Blue Economy_",
+        "created_date": "2025-11-23T12:37:03.176012",
+        "is_active": true,
+        "metadata": {
+          "years_mentioned": [
+            "2025"
+          ],
+          "document_type": "docx"
+        }
+      }
+    ],
+    "current_fy2025": [
+      {
+        "id": "IVLP-FY2025-076",
+        "title": "Collaboration and Cooperation on Refugee and Migration Issues within the United States",
+        "description": "_______________________________ Project Title/Subject: Collaboration and Cooperation on Refugee and Migration Issues within the United States Project Type:\t Regional Project\t",
+        "type": "IVLP Proposal",
+        "fiscal_year": "FY2025",
+        "status": "current",
+        "priority": 3,
+        "themes": [
+          "Security",
+          "Health",
+          "Economy"
+        ],
+        "regions": [
+          "Africa",
+          "Americas"
+        ],
+        "file_path": "C:\\Users\\yoanb\\Desktop\\MVPSandiegodiplo\\Ressource\\Proposals Sent FY2025-20251122T232159Z-1-001\\Proposals Sent FY2025\\Collaboration and Cooperation on Refugee and Migration Issues within the United States.docx",
+        "filename": "Collaboration and Cooperation on Refugee and Migration Issues within the United States",
+        "created_date": "2025-11-23T12:37:03.175937",
+        "is_active": true,
+        "metadata": {
+          "years_mentioned": [
+            "2024"
+          ],
+          "document_type": "docx"
+        }
+      },
+      {
+        "id": "IVLP-FY2025-077",
+        "title": "Fentanyl and Protecting Public Health",
+        "description": " _______________________________ Project Title/Subject:\tFentanyl and Protecting Public Health",
+        "type": "IVLP Proposal",
+        "fiscal_year": "FY2025",
+        "status": "current",
+        "priority": 3,
+        "themes": [
+          "Security",
+          "Health",
+          "Economy"
+        ],
+        "regions": [
+          "Americas"
+        ],
+        "file_path": "C:\\Users\\yoanb\\Desktop\\MVPSandiegodiplo\\Ressource\\Proposals Sent FY2025-20251122T232159Z-1-001\\Proposals Sent FY2025\\Fentanyl and Protecting Public Health.docx",
+        "filename": "Fentanyl and Protecting Public Health",
+        "created_date": "2025-11-23T12:37:03.175938",
+        "is_active": true,
+        "metadata": {
+          "years_mentioned": [
+            "2016",
+            "2021",
+            "2022",
+            "2025"
+          ],
+          "document_type": "docx"
+        }
+      }
+    ],
+    "archived_fy2024": [
+      {
+        "id": "IVLP-FY2024-039",
+        "title": "10  -  Current U.S. Social, Political, and Economic Issues for Young European Leaders I   -  Proposal  (1)",
+        "description": "_______________________________ Project Title/Subject:\tCurrent U.S. Social, Political, and Economic Issues for Young European Leaders I   Project Type: \t\tRegional",
+        "type": "IVLP Proposal",
+        "fiscal_year": "FY2024",
+        "status": "archived",
+        "priority": 2,
+        "themes": [
+          "Climate",
+          "Health",
+          "Economy"
+        ],
+        "regions": [
+          "Europe",
+          "Africa",
+          "Americas"
+        ],
+        "file_path": "C:\\Users\\yoanb\\Desktop\\MVPSandiegodiplo\\Ressource\\Proposals Sent FY 2024-20251122T231858Z-1-001\\Proposals Sent FY 2024\\10 - Current U.S. Social, Political, and Economic Issues for Young European Leaders I  - Proposal  (1).docx",
+        "filename": "10 - Current U.S. Social, Political, and Economic Issues for Young European Leaders I  - Proposal  (1)",
+        "created_date": "2025-11-23T12:37:03.175866",
+        "is_active": false,
+        "metadata": {
+          "years_mentioned": [
+            "2024"
+          ],
+          "document_type": "docx"
+        }
+      },
+      {
+        "id": "IVLP-FY2024-040",
+        "title": "11  -  Countering Violent Extremism Proposal",
+        "description": "_______________________________ Project Title/Subject:\tCountering Violent Extremism and Racially and Ethnically Motivated Violent Extremism- Community Strategies Project Type: \t\tRegional Project",
+        "type": "IVLP Proposal",
+        "fiscal_year": "FY2024",
+        "status": "archived",
+        "priority": 2,
+        "themes": [
+          "Security",
+          "Health",
+          "Economy"
+        ],
+        "regions": [
+          "Americas"
+        ],
+        "file_path": "C:\\Users\\yoanb\\Desktop\\MVPSandiegodiplo\\Ressource\\Proposals Sent FY 2024-20251122T231858Z-1-001\\Proposals Sent FY 2024\\11 - Countering Violent Extremism Proposal.docx",
+        "filename": "11 - Countering Violent Extremism Proposal",
+        "created_date": "2025-11-23T12:37:03.175868",
+        "is_active": false,
+        "metadata": {
+          "years_mentioned": [
+            "2019",
+            "2024"
+          ],
+          "document_type": "docx"
+        }
+      }
+    ],
+    "archived_fy2023": [
+      {
+        "id": "IVLP-FY2023-001",
+        "title": "2  -  Entrepreneurship and Small Business Development  -  San Diego",
+        "description": "_______________________________ Project Title/Subject:\tEntrepreneurship and Small Business Development Project Type: \t\tRegional Project",
+        "type": "IVLP Proposal",
+        "fiscal_year": "FY2023",
+        "status": "archived",
+        "priority": 1,
+        "themes": [
+          "Climate",
+          "Security",
+          "Health"
+        ],
+        "regions": [
+          "Europe",
+          "Americas"
+        ],
+        "file_path": "C:\\Users\\yoanb\\Desktop\\MVPSandiegodiplo\\Ressource\\Proposals Sent FY2023-20251122T232359Z-1-001\\Proposals Sent FY2023\\2 - Entrepreneurship and Small Business Development - San Diego.docx",
+        "filename": "2 - Entrepreneurship and Small Business Development - San Diego",
+        "created_date": "2025-11-23T12:37:03.175751",
+        "is_active": false,
+        "metadata": {
+          "years_mentioned": [
+            "2023"
+          ],
+          "document_type": "docx"
+        }
+      },
+      {
+        "id": "IVLP-FY2023-002",
+        "title": "2  -  Management of Marine Protected Areas OD Argentina",
+        "description": "Project Title/Subject:\t\tManagement of Marine Protected Areas Project Type: \t\t\tOn Demand SCP - Argentina NPA: \t\t\t\tAmerican Councils for International Education ",
+        "type": "IVLP Proposal",
+        "fiscal_year": "FY2023",
+        "status": "archived",
+        "priority": 1,
+        "themes": [
+          "Climate",
+          "Health",
+          "Economy"
+        ],
+        "regions": [
+          "Indo-Pacific",
+          "Americas"
+        ],
+        "file_path": "C:\\Users\\yoanb\\Desktop\\MVPSandiegodiplo\\Ressource\\Proposals Sent FY2023-20251122T232359Z-1-001\\Proposals Sent FY2023\\2 - Management of Marine Protected Areas OD Argentina.docx",
+        "filename": "2 - Management of Marine Protected Areas OD Argentina",
+        "created_date": "2025-11-23T12:37:03.175791",
+        "is_active": false,
+        "metadata": {
+          "years_mentioned": [
+            "2023"
+          ],
+          "document_type": "docx"
+        }
+      }
+    ]
+  },
+  "total_resources": 126
+}
