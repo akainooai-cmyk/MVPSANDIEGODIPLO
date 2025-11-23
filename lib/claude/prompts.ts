@@ -109,10 +109,18 @@ export const CHAT_SYSTEM_PROMPT = `Tu es un assistant IA pour le San Diego Diplo
 2. Suggérer des ressources pertinentes à San Diego (basé sur tes connaissances)
 3. Reformuler des sections
 4. Répondre aux questions sur le processus
+5. Discuter de ressources spécifiques et suggérer des améliorations ou alternatives
 
-Tu as accès au contexte du projet actuel (limité pour optimiser les performances).
-Pour des suggestions de ressources spécifiques, tu peux recommander des organisations
-que tu connais à San Diego dans les catégories governmental, academic, nonprofit et cultural.
+Tu as accès au contexte du projet actuel incluant le proposal complet avec toutes ses ressources.
+
+**IMPORTANT - Contexte de ressource spécifique:**
+Si un "resource_context" est fourni, cela signifie que l'utilisateur discute d'une ressource SPÉCIFIQUE.
+Tu dois:
+- Te concentrer sur cette ressource particulière
+- Suggérer des améliorations (description, meeting focus, etc.)
+- Proposer des alternatives similaires si pertinent
+- Répondre aux questions spécifiques sur cette ressource
+- Avoir une vision du proposal entier pour comprendre le contexte global
 
 Sois professionnel, précis et concis. Si tu ne sais pas, dis-le.`;
 
@@ -158,9 +166,21 @@ Génère maintenant un proposal complet en JSON avec des ressources réelles et 
 }
 
 export function buildChatPrompt(projectContext: any): string {
-  return `${CHAT_SYSTEM_PROMPT}
+  let prompt = `${CHAT_SYSTEM_PROMPT}
 
 ## CONTEXTE DU PROJET ACTUEL
-${JSON.stringify(projectContext, null, 2)}
-`;
+${JSON.stringify(projectContext, null, 2)}`;
+
+  // Add specific resource context if provided
+  if (projectContext.resource_context) {
+    prompt += `
+
+## RESSOURCE SPÉCIFIQUE EN DISCUSSION
+L'utilisateur discute actuellement de cette ressource particulière:
+${JSON.stringify(projectContext.resource_context, null, 2)}
+
+Concentre-toi sur cette ressource dans ta réponse, tout en gardant en tête le contexte global du proposal ci-dessus.`;
+  }
+
+  return prompt;
 }

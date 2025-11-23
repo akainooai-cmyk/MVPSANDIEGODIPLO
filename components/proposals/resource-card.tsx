@@ -25,6 +25,8 @@ interface ResourceCardProps {
   onDelete: () => void;
   onEdit: (updatedResource: any) => void;
   onDiscuss: () => void;
+  onRestore?: () => void; // Optional restore function for deleted resources
+  isInTrash?: boolean; // Flag to indicate if rendering in trash view
 }
 
 const categoryColors = {
@@ -49,6 +51,8 @@ export function ResourceCard({
   onDelete,
   onEdit,
   onDiscuss,
+  onRestore,
+  isInTrash = false,
 }: ResourceCardProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedResource, setEditedResource] = useState(resource);
@@ -63,12 +67,16 @@ export function ResourceCard({
     setIsEditing(false);
   };
 
-  if (status === 'deleted') {
-    return null; // Don't render deleted resources
+  // Deleted resources are now rendered with special styling in the trash section
+  // This check is removed to allow rendering in trash view
+
+  // Don't render deleted resources in normal view (only in trash)
+  if (status === 'deleted' && !isInTrash) {
+    return null;
   }
 
   return (
-    <Card className={`border-l-4 ${categoryColors[category]}`}>
+    <Card className={`border-l-4 ${categoryColors[category]} ${status === 'deleted' ? 'opacity-60 bg-gray-50' : ''}`}>
       <CardContent className="p-4">
         <div className="space-y-3">
           {/* Header with status and actions */}
@@ -198,7 +206,19 @@ export function ResourceCard({
                   Cancel
                 </Button>
               </>
+            ) : status === 'deleted' && isInTrash ? (
+              // Trash view: Show restore button
+              <Button
+                size="sm"
+                onClick={onRestore}
+                variant="default"
+                className="flex-1"
+              >
+                <Check className="h-4 w-4 mr-1" />
+                Restore
+              </Button>
             ) : (
+              // Normal view: Show standard actions
               <>
                 {status === 'pending' && (
                   <Button

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Save, Download, FileText, MessageCircle, X } from 'lucide-react';
+import { ArrowLeft, Save, Download, FileText, MessageCircle, X, Trash2 } from 'lucide-react';
 import { ChatAssistant } from '@/components/chat/chat-assistant';
 import { downloadProposalPDF } from '@/lib/pdf/generator';
 import { ResourceSection } from '@/components/proposals/resource-section';
@@ -35,6 +35,7 @@ export default function ProposalEditPage({
     'governmental' | 'academic' | 'nonprofit' | 'cultural'
   >('governmental');
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const [showTrash, setShowTrash] = useState(false);
 
   useEffect(() => {
     fetchProposal();
@@ -231,6 +232,13 @@ export default function ProposalEditPage({
           </div>
 
           <div className="flex gap-2">
+            <Button
+              onClick={() => setShowTrash(!showTrash)}
+              variant={showTrash ? 'default' : 'outline'}
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              {showTrash ? 'Hide Trash' : 'Show Trash'}
+            </Button>
             <Button onClick={() => handleExport('pdf')} variant="outline">
               <FileText className="h-4 w-4 mr-2" />
               Export PDF
@@ -261,24 +269,90 @@ export default function ProposalEditPage({
         />
       )}
 
-      {/* Why San Diego */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Why San Diego?</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Textarea
-            value={content.why_san_diego}
-            onChange={(e) =>
-              setContent({ ...content, why_san_diego: e.target.value })
-            }
-            rows={6}
-            className="font-sans"
-          />
-        </CardContent>
-      </Card>
+      {/* Show trash view or normal view */}
+      {showTrash ? (
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-red-600">Trash - Deleted Resources</CardTitle>
+              <p className="text-sm text-gray-500 mt-1">
+                Deleted resources are stored here. You can restore them by clicking the Restore button.
+              </p>
+            </CardHeader>
+          </Card>
 
-      {/* Governmental Resources */}
+          {/* Governmental Resources Trash */}
+          <ResourceSection
+            title="Governmental Resources"
+            category="governmental"
+            resources={content.governmental_resources as any}
+            onResourcesChange={(updated) =>
+              setContent({ ...content, governmental_resources: updated as any })
+            }
+            onAddResource={() => handleAddResource('governmental_resources')}
+            onDiscussResource={handleDiscussResource}
+            showTrash={true}
+          />
+
+          {/* Academic Resources Trash */}
+          <ResourceSection
+            title="Academic Resources"
+            category="academic"
+            resources={content.academic_resources as any}
+            onResourcesChange={(updated) =>
+              setContent({ ...content, academic_resources: updated as any })
+            }
+            onAddResource={() => handleAddResource('academic_resources')}
+            onDiscussResource={handleDiscussResource}
+            showTrash={true}
+          />
+
+          {/* Nonprofit Resources Trash */}
+          <ResourceSection
+            title="Nonprofit Resources"
+            category="nonprofit"
+            resources={content.nonprofit_resources as any}
+            onResourcesChange={(updated) =>
+              setContent({ ...content, nonprofit_resources: updated as any })
+            }
+            onAddResource={() => handleAddResource('nonprofit_resources')}
+            onDiscussResource={handleDiscussResource}
+            showTrash={true}
+          />
+
+          {/* Cultural Activities Trash */}
+          <ResourceSection
+            title="Cultural Activities"
+            category="cultural"
+            resources={content.cultural_activities as any}
+            onResourcesChange={(updated) =>
+              setContent({ ...content, cultural_activities: updated as any })
+            }
+            onAddResource={() => handleAddResource('cultural_activities')}
+            onDiscussResource={handleDiscussResource}
+            showTrash={true}
+          />
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {/* Why San Diego */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Why San Diego?</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Textarea
+                value={content.why_san_diego}
+                onChange={(e) =>
+                  setContent({ ...content, why_san_diego: e.target.value })
+                }
+                rows={6}
+                className="font-sans"
+              />
+            </CardContent>
+          </Card>
+
+          {/* Governmental Resources */}
       <ResourceSection
         title="Governmental Resources"
         category="governmental"
@@ -314,17 +388,19 @@ export default function ProposalEditPage({
         onDiscussResource={handleDiscussResource}
       />
 
-      {/* Cultural Activities */}
-      <ResourceSection
-        title="Cultural Activities"
-        category="cultural"
-        resources={content.cultural_activities as any}
-        onResourcesChange={(updated) =>
-          setContent({ ...content, cultural_activities: updated as any })
-        }
-        onAddResource={() => handleAddResource('cultural_activities')}
-        onDiscussResource={handleDiscussResource}
-      />
+          {/* Cultural Activities */}
+          <ResourceSection
+            title="Cultural Activities"
+            category="cultural"
+            resources={content.cultural_activities as any}
+            onResourcesChange={(updated) =>
+              setContent({ ...content, cultural_activities: updated as any })
+            }
+            onAddResource={() => handleAddResource('cultural_activities')}
+            onDiscussResource={handleDiscussResource}
+          />
+        </div>
+      )}
 
       {/* AI Chat Assistant - Fixed bottom right */}
       {showChat && (

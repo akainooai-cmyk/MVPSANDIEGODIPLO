@@ -21,6 +21,7 @@ export function ChatAssistant({ projectId, initialContext }: ChatAssistantProps)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [contextProcessed, setContextProcessed] = useState(false);
+  const [activeResourceContext, setActiveResourceContext] = useState<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when new messages arrive
@@ -39,17 +40,20 @@ export function ChatAssistant({ projectId, initialContext }: ChatAssistantProps)
 
   useEffect(() => {
     // Process initial context if provided
-    if (initialContext && !contextProcessed && messages.length > 0) {
+    if (initialContext && !contextProcessed) {
       setContextProcessed(true);
 
       if (initialContext.type === 'resource' && initialContext.resource) {
-        // Auto-send a message about the resource
+        // Store the resource context
+        setActiveResourceContext(initialContext.resource);
+
+        // Auto-fill the input with the message about the resource
         const contextMessage = initialContext.message ||
           `I'd like help with this resource: ${initialContext.resource.name}. Can you suggest improvements or alternatives?`;
         setInput(contextMessage);
       }
     }
-  }, [initialContext, messages, contextProcessed]);
+  }, [initialContext, contextProcessed]);
 
   const loadConversation = async () => {
     try {
@@ -88,6 +92,7 @@ export function ChatAssistant({ projectId, initialContext }: ChatAssistantProps)
         body: JSON.stringify({
           project_id: projectId,
           message: userMessage,
+          resource_context: activeResourceContext, // Send the resource being discussed
         }),
       });
 

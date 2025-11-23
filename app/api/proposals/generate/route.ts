@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import { generateProposal } from '@/lib/claude/generate';
+import { validateUrls } from '@/lib/utils/url-validator';
+import type { ProposalContent, ResourceItem, CulturalActivity } from '@/lib/types';
 
-export const maxDuration = 60; // Allow up to 60 seconds for AI generation
+export const maxDuration = 120; // Allow up to 120 seconds for AI generation + URL validation
 
 // POST /api/proposals/generate - Generate a new proposal using Claude AI
 export async function POST(request: NextRequest) {
@@ -67,7 +69,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate proposal using Claude AI
-    const proposalContent = await generateProposal(
+    let proposalContent = await generateProposal(
       {
         ...project,
         extracted_content: projectDataDoc?.extracted_content,
@@ -81,6 +83,73 @@ export async function POST(request: NextRequest) {
         : null,
       resources || []
     );
+
+    // Validate all URLs in the proposal
+    const allUrls: string[] = [];
+    const urlToResourceMap = new Map<string, { type: string; index: number }>();
+
+    // Collect all URLs from resources
+    proposalContent.governmental_resources.forEach((r, i) => {
+      if (r.url) {
+        allUrls.push(r.url);
+        urlToResourceMap.set(r.url, { type: 'governmental', index: i });
+      }
+    });
+    proposalContent.academic_resources.forEach((r, i) => {
+      if (r.url) {
+        allUrls.push(r.url);
+        urlToResourceMap.set(r.url, { type: 'academic', index: i });
+      }
+    });
+    proposalContent.nonprofit_resources.forEach((r, i) => {
+      if (r.url) {
+        allUrls.push(r.url);
+        urlToResourceMap.set(r.url, { type: 'nonprofit', index: i });
+      }
+    });
+    proposalContent.cultural_activities.forEach((r, i) => {
+      if (r.url) {
+        allUrls.push(r.url);
+        urlToResourceMap.set(r.url, { type: 'cultural', index: i });
+      }
+    });
+
+    // Validate all URLs in parallel
+    if (allUrls.length > 0) {
+      console.log(`Validating ${allUrls.length} URLs...`);
+      const validationResults = await validateUrls(allUrls, 10); // 10 concurrent validations
+
+      // Filter out invalid URLs
+      const invalidUrls = validationResults
+        .filter(r => !r.isValid)
+        .map(r => r.url);
+
+      if (invalidUrls.length > 0) {
+        console.log(`Found ${invalidUrls.length} invalid URLs, filtering them out...`);
+
+        // Remove resources with invalid URLs
+        proposalContent.governmental_resources = proposalContent.governmental_resources.filter(
+          r => !invalidUrls.includes(r.url)
+        );
+        proposalContent.academic_resources = proposalContent.academic_resources.filter(
+          r => !invalidUrls.includes(r.url)
+        );
+        proposalContent.nonprofit_resources = proposalContent.nonprofit_resources.filter(
+          r => !invalidUrls.includes(r.url)
+        );
+        proposalContent.cultural_activities = proposalContent.cultural_activities.filter(
+          r => !invalidUrls.includes(r.url)
+        );
+
+        console.log(`Filtered proposal resources. Remaining counts:
+          - Governmental: ${proposalContent.governmental_resources.length}
+          - Academic: ${proposalContent.academic_resources.length}
+          - Nonprofit: ${proposalContent.nonprofit_resources.length}
+          - Cultural: ${proposalContent.cultural_activities.length}`);
+      } else {
+        console.log('All URLs are valid!');
+      }
+    }
 
     // Check if a proposal already exists for this project
     const { data: existingProposal } = await supabase

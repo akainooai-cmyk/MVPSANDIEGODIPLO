@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { project_id, message } = await request.json();
+    const { project_id, message, resource_context } = await request.json();
 
     if (!project_id || !message) {
       return NextResponse.json(
@@ -85,9 +85,10 @@ export async function POST(request: NextRequest) {
       conversation = newConversation;
     }
 
-    // Build message history - keep only the last 20 messages to avoid token limits
+    // Build message history - keep only the last 10 messages to save tokens
+    // (We need to send the full proposal content, so we reduce conversation history)
     const allMessages = conversation.messages as Message[];
-    const recentMessages = allMessages.slice(-20);
+    const recentMessages = allMessages.slice(-10);
 
     const messages: Message[] = [
       ...recentMessages,
@@ -98,7 +99,7 @@ export async function POST(request: NextRequest) {
       },
     ];
 
-    // Get AI response - simplified context to avoid token limits
+    // Get AI response - include full proposal content for interactivity
     const projectContext = {
       project: {
         id: project.id,
@@ -112,22 +113,14 @@ export async function POST(request: NextRequest) {
       documents: (documents || []).map((doc) => ({
         name: doc.name,
         file_type: doc.file_type,
-        uploaded_at: doc.uploaded_at,
       })),
       proposal: proposal ? {
         id: proposal.id,
         version: proposal.version,
         status: proposal.status,
-        has_content: !!proposal.content,
-        // Only send summary info, not full content to save tokens
-        resource_counts: {
-          governmental: proposal.content?.governmental_resources?.length || 0,
-          academic: proposal.content?.academic_resources?.length || 0,
-          nonprofit: proposal.content?.nonprofit_resources?.length || 0,
-          cultural: proposal.content?.cultural_activities?.length || 0,
-        },
-        why_san_diego_preview: proposal.content?.why_san_diego?.substring(0, 200) || '',
+        content: proposal.content, // Full content for AI to interact with resources
       } : null,
+      resource_context: resource_context || null, // Include specific resource being discussed
     };
 
     const aiResponse = await chatWithAssistant(messages, projectContext);
