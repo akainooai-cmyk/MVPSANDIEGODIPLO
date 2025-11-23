@@ -55,12 +55,6 @@ export async function POST(request: NextRequest) {
       .eq('project_id', project_id)
       .single();
 
-    // Fetch resources
-    const { data: resources } = await supabase
-      .from('resources')
-      .select('*')
-      .eq('is_active', true);
-
     // Get or create conversation
     let conversation;
     const { data: existingConversation } = await supabase
@@ -91,9 +85,12 @@ export async function POST(request: NextRequest) {
       conversation = newConversation;
     }
 
-    // Build message history
+    // Build message history - keep only the last 20 messages to avoid token limits
+    const allMessages = conversation.messages as Message[];
+    const recentMessages = allMessages.slice(-20);
+
     const messages: Message[] = [
-      ...(conversation.messages as Message[]),
+      ...recentMessages,
       {
         role: 'user',
         content: message,
@@ -101,19 +98,48 @@ export async function POST(request: NextRequest) {
       },
     ];
 
-    // Get AI response
+    // Get AI response - simplified context to avoid token limits
     const projectContext = {
-      project,
-      documents: documents || [],
-      proposal,
-      resources: resources || [],
+      project: {
+        id: project.id,
+        project_title: project.project_title,
+        project_type: project.project_type,
+        start_date: project.start_date,
+        end_date: project.end_date,
+        estimated_participants: project.estimated_participants,
+        status: project.status,
+      },
+      documents: (documents || []).map((doc) => ({
+        name: doc.name,
+        file_type: doc.file_type,
+        uploaded_at: doc.uploaded_at,
+      })),
+      proposal: proposal ? {
+        id: proposal.id,
+        version: proposal.version,
+        status: proposal.status,
+        has_content: !!proposal.content,
+        // Only send summary info, not full content to save tokens
+        resource_counts: {
+          governmental: proposal.content?.governmental_resources?.length || 0,
+          academic: proposal.content?.academic_resources?.length || 0,
+          nonprofit: proposal.content?.nonprofit_resources?.length || 0,
+          cultural: proposal.content?.cultural_activities?.length || 0,
+        },
+        why_san_diego_preview: proposal.content?.why_san_diego?.substring(0, 200) || '',
+      } : null,
     };
 
     const aiResponse = await chatWithAssistant(messages, projectContext);
 
-    // Add AI response to messages
+    // Add AI response to ALL messages (not just recent ones)
     const updatedMessages: Message[] = [
-      ...messages,
+      ...allMessages,
+      {
+        role: 'user',
+        content: message,
+        timestamp: new Date().toISOString(),
+      },
       {
         role: 'assistant',
         content: aiResponse,
