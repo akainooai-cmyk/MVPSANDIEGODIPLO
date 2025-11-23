@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { getStatusColor } from '@/lib/utils';
 
 export default function ProjectsPage() {
@@ -27,6 +27,27 @@ export default function ProjectsPage() {
       console.error('Failed to fetch projects:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/projects/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        setProjects(prev => prev.filter(p => p.id !== id));
+      } else {
+        alert('Failed to delete project');
+      }
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      alert('Failed to delete project');
     }
   };
 
@@ -65,8 +86,8 @@ export default function ProjectsPage() {
           {projects.map((project) => (
             <Card key={project.id} className="hover:shadow-md transition-shadow">
               <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex-1 min-w-0">
                     <CardTitle className="text-lg">
                       {project.project_title || project.name}
                     </CardTitle>
@@ -74,9 +95,19 @@ export default function ProjectsPage() {
                       <p className="text-sm text-gray-500 mt-1">{project.project_number}</p>
                     )}
                   </div>
-                  <Badge className={getStatusColor(project.status)}>
-                    {project.status}
-                  </Badge>
+                  <div className="flex items-center gap-2">
+                    <Badge className={getStatusColor(project.status)}>
+                      {project.status}
+                    </Badge>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDelete(project.id)}
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50 h-8 w-8 p-0"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent>

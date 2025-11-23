@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Plus, Edit, Trash2, Filter } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Plus, Edit, Trash2, Filter, Search } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import type { Resource, ResourceCategory } from '@/lib/types';
 
@@ -14,18 +15,33 @@ export default function ResourcesPage() {
   const [filteredResources, setFilteredResources] = useState<Resource[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<ResourceCategory | 'all'>('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     fetchResources();
   }, []);
 
   useEffect(() => {
-    if (selectedCategory === 'all') {
-      setFilteredResources(resources);
-    } else {
-      setFilteredResources(resources.filter(r => r.category === selectedCategory));
+    let filtered = resources;
+
+    // Filter by category
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(r => r.category === selectedCategory);
     }
-  }, [selectedCategory, resources]);
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(r =>
+        r.name.toLowerCase().includes(query) ||
+        (r.description && r.description.toLowerCase().includes(query)) ||
+        (r.meeting_focus && r.meeting_focus.toLowerCase().includes(query)) ||
+        (r.url && r.url.toLowerCase().includes(query))
+      );
+    }
+
+    setFilteredResources(filtered);
+  }, [selectedCategory, resources, searchQuery]);
 
   const fetchResources = async () => {
     try {
@@ -92,6 +108,28 @@ export default function ResourcesPage() {
             Add Resource
           </Button>
         </Link>
+      </div>
+
+      {/* Search Bar */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+        <Input
+          type="text"
+          placeholder="Search resources by name, description, focus, or URL..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-10 w-full"
+        />
+        {searchQuery && (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 h-7 px-2"
+            onClick={() => setSearchQuery('')}
+          >
+            Clear
+          </Button>
+        )}
       </div>
 
       {/* Category Filters */}
